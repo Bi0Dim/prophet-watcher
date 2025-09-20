@@ -25,9 +25,9 @@ jobs:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GH_PAT }}
 
       # Шаг 4: Собираем и отправляем образ (используем созданный тег)
       - name: Build and push Docker image
