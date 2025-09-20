@@ -1,0 +1,18 @@
+# Visual Studio Code files
+.vscode/
+
+# Visual Studio files
+*.sln.docstates
+*.suo
+*.user
+*.log
+*.tlog
+*.vs/
+*.[Cc]ache/
+[Bb]in/
+[Dd]ebug/
+[Oo]bj/
+[Rr]elease/
+[Xx]64/
+[Aa][Rr][Mm]64/
+[Ll]og/
