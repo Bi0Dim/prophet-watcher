@@ -13,7 +13,7 @@ COPY src/ ./src/
 
 # Запускаем команду компиляции. Она берет наш .cpp файл
 # и создает исполняемый файл "watcher"
-RUN g++ -o watcher src/Prophet.Watcher.cpp -static.
+RUN g++ -o watcher src/Prophet.Watcher.cpp -static
 
 # Запускаем команду компиляции. Она берет наш .cpp файл
 # и создает исполняемый файл "watcher"
