@@ -1,7 +1,5 @@
-# Имя нашего процесса автоматизации
 name: Build and Push Docker Image
 
-# Условие запуска: при любом "push" в ветку master
 on:
   push:
     branches: [ "master" ]
