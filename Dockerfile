@@ -9,8 +9,11 @@ WORKDIR /app
 COPY src/ ./src/
 
 # Копируем файл проекта Visual Studio (может понадобиться для зависимостей)
-COPY Prophet.Watcher.sln .
-COPY Prophet.Watcher.vcxproj .
+COPY src/ ./src/
+
+# Запускаем команду компиляции. Она берет наш .cpp файл
+# и создает исполняемый файл "watcher"
+RUN g++ -o watcher src/Prophet.Watcher.cpp -static.
 
 # Запускаем команду компиляции. Она берет наш .cpp файл
 # и создает исполняемый файл "watcher"
