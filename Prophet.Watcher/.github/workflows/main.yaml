@@ -1,0 +1,36 @@
+# Имя нашего процесса автоматизации
+name: Build and Push Docker Image
+
+# Условие запуска: при любом "push" в ветку master
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build-and-push:
+    # Запускаем на виртуальной машине с Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Скачиваем наш код из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Шаг 2: Входим в GitHub Container Registry (хранилище образов)
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Шаг 3: Собираем и отправляем Docker-образ
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          # Используем наш Dockerfile
+          context: .
+          # Отправляем в хранилище
+          push: true
+          # Даем образу имя, например: ghcr.io/ваш_логин/prophet-watcher:хэш_коммита
+          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
