@@ -7,33 +7,34 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    
+    # --- НОВЫЙ КЛЮЧЕВОЙ БЛОК ---
+    # Явно даем права этому процессу на чтение кода и запись пакетов
+    permissions:
+      contents: read
+      packages: write
+    # ---------------------------
+
     steps:
-      # Шаг 1: Скачиваем код (остается без изменений)
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Шаг 2 (НОВЫЙ): Создаем правильное имя для тега в нижнем регистре
       - name: Generate lowercase docker tag
-        id: meta # Даем этому шагу ID, чтобы ссылаться на него
+        id: meta
         run: |
-          # Берем имя репозитория (Bi0Dim/prophet-watcher)
-          # Преобразуем его в нижний регистр (bi0dim/prophet-watcher)
-          # и сохраняем в переменную вывода с именем "repo_tag"
           echo "repo_tag=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
 
-      # Шаг 3: Входим в GitHub Container Registry (остается без изменений)
+      # Используем стандартный GITHUB_TOKEN, так как теперь у него есть права
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-            registry: ghcr.io
-            username: ${{ github.actor }}
-            password: ${{ secrets.GH_PAT }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Шаг 4: Собираем и отправляем образ (используем созданный тег)
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          # Используем переменную вывода из шага с ID "meta"
           tags: ghcr.io/${{ steps.meta.outputs.repo_tag }}:${{ github.sha }}
